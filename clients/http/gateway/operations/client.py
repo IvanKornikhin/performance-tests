@@ -10,82 +10,63 @@ class GetOperationsQueryDict(TypedDict):
     accountId: str
 
 
-class GetOperationsSummaryQueryDict(TypedDict):
+class GetOperationsSummaryQueryDict(GetOperationsQueryDict):
     """
     Структура данных для получения статистики по операциям для определенного счета.
     """
-    accountId: str
 
 
-class MakeFeeOperationRequestDict(TypedDict):
+class MakeOperationRequestDict(TypedDict):
     """
-    Структура данных для cоздания операции комиссии.
+    Базовый класс для создания операций.
     """
     status: str
-    amount: int
+    amount: float
     cardId: str
     accountId: str
 
 
-class MakeTopUpOperationRequestDict(TypedDict):
+class MakeFeeOperationRequestDict(MakeOperationRequestDict):
     """
     Структура данных для cоздания операции комиссии.
     """
-    status: str
-    amount: int
-    cardId: str
-    accountId: str
 
 
-class MakeCashbackOperationRequestDict(TypedDict):
+class MakeTopUpOperationRequestDict(MakeOperationRequestDict):
+    """
+    Структура данных для cоздания операции комиссии.
+    """
+
+
+class MakeCashbackOperationRequestDict(MakeOperationRequestDict):
     """
     Структура данных для cоздания операции кешбэка.
     """
-    status: str
-    amount: int
-    cardId: str
-    accountId: str
 
 
-class MakeTransferOperationRequestDict(TypedDict):
+class MakeTransferOperationRequestDict(MakeOperationRequestDict):
     """
     Структура данных для cоздания операции перевода.
     """
-    status: str
-    amount: int
-    cardId: str
-    accountId: str
 
 
-class MakePurchaseOperationRequestDict(TypedDict):
+class MakePurchaseOperationRequestDict(MakeOperationRequestDict):
     """
     Структура данных для cоздания операции покупки.
     """
-    status: str
-    amount: int
-    cardId: str
-    accountId: str
     category: str
 
 
-class MakeBillPaymentOperationRequestDict(TypedDict):
+class MakeBillPaymentOperationRequestDict(MakeOperationRequestDict):
     """
     Структура данных для cоздания операции оплаты по счету.
     """
-    status: str
-    amount: int
-    cardId: str
-    accountId: str
 
 
-class MakeCashWithdrawalOperationRequestDict(TypedDict):
+class MakeCashWithdrawalOperationRequestDict(MakeOperationRequestDict):
     """
     Структура данных для cоздания операции снятия наличных денег.
     """
-    status: str
-    amount: int
-    cardId: str
-    accountId: str
 
 
 class OperationsGatewayHTTPClient(HTTPClient):
