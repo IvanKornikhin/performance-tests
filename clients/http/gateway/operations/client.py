@@ -142,7 +142,7 @@ class OperationsGatewayHTTPClient(HTTPClient):
     def make_purchase_operation_api(self, request: MakePurchaseOperationRequestDict) -> Response:
         """
         Выполняет POST-запрос для создания  операции покупки.
-        :param request: Словарь с status, amount, cardId, accountId, category.
+        :param request: cловарь с status, amount, cardId, accountId, category.
         :return: Объект httpx.Response с результатом операции.
          """
         return self.post("/api/v1/operations/make-purchase-operation", json=request)
