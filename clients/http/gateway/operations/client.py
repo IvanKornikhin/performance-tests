@@ -14,7 +14,7 @@ class GetOperationsSummaryQueryDict(GetOperationsQueryDict):
     """
     Структура данных для получения статистики по операциям для определенного счета.
     """
-
+    pass
 
 class MakeOperationRequestDict(TypedDict):
     """
@@ -30,24 +30,28 @@ class MakeFeeOperationRequestDict(MakeOperationRequestDict):
     """
     Структура данных для cоздания операции комиссии.
     """
+    pass
 
 
 class MakeTopUpOperationRequestDict(MakeOperationRequestDict):
     """
     Структура данных для cоздания операции комиссии.
     """
+    pass
 
 
 class MakeCashbackOperationRequestDict(MakeOperationRequestDict):
     """
     Структура данных для cоздания операции кешбэка.
     """
+    pass
 
 
 class MakeTransferOperationRequestDict(MakeOperationRequestDict):
     """
     Структура данных для cоздания операции перевода.
     """
+    pass
 
 
 class MakePurchaseOperationRequestDict(MakeOperationRequestDict):
@@ -61,12 +65,14 @@ class MakeBillPaymentOperationRequestDict(MakeOperationRequestDict):
     """
     Структура данных для cоздания операции оплаты по счету.
     """
+    pass
 
 
 class MakeCashWithdrawalOperationRequestDict(MakeOperationRequestDict):
     """
     Структура данных для cоздания операции снятия наличных денег.
     """
+    pass
 
 
 class OperationsGatewayHTTPClient(HTTPClient):
