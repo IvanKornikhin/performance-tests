@@ -1,25 +1,31 @@
-from pydantic import BaseModel, EmailStr, constr
+from pydantic import BaseModel, Field, EmailStr
 
 
 class UserSchema(BaseModel):
-    """класс для создания пользователя"""
+    """
+    Описание структуры пользователя.
+    """
     id: str
     email: EmailStr
-    last_name: str
-    first_name: constr(min_length=2, max_length=50)
-    middle_name: str
-    phone_number: str
+    last_name: str = Field(alias="lastName")
+    first_name: str = Field(alias="firstName")
+    middle_name: str = Field(alias="middleName")
+    phone_number: str = Field(alias="phoneNumber")
 
 
 class CreateUserRequestSchema(BaseModel):
-    """класс для запроса создания пользователя"""
+    """
+    Описание структуры запроса на создание пользователя.
+    """
     email: EmailStr
-    last_name: str
-    first_name: constr(min_length=2, max_length=50)
-    middle_name: str
-    phone_number: str
+    last_name: str = Field(alias="lastName")
+    first_name: str = Field(alias="firstName")
+    middle_name: str = Field(alias="middleName")
+    phone_number: str = Field(alias="phoneNumber")
 
 
 class CreateUserResponseSchema(BaseModel):
-    """класс для ответа на запрос создания пользователя"""
+    """
+    Описание структуры ответа создания пользователя.
+    """
     user: UserSchema
