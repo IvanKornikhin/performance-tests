@@ -2,24 +2,23 @@ from pydantic import BaseModel, HttpUrl
 
 
 class DocumentSchema(BaseModel):
-    #Добавили суффикс Schema вместо Dict. Наследуем от BaseModel вместо TypedDict
     """
     Описание структуры документа.
     """
     url: HttpUrl
-    document: str #здесь же алиас не нужен, в любых case слово document одинаково пишется
+    document: str
 
 
 class GetTariffDocumentResponseSchema(BaseModel):
     """
-    описание структуры ответа создания документа по тарифу
+    Описание структуры ответа получения документа тарифа.
     """
     tariff: DocumentSchema
 
 
 class GetContractDocumentResponseSchema(BaseModel):
     """
-    описание структуры ответа создания документа по контракту
+    Описание структуры ответа получения документа контракта.
     """
     contract: DocumentSchema
 
