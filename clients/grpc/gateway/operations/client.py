@@ -3,26 +3,52 @@ from grpc import Channel
 from clients.grpc.client import GRPCClient
 from clients.grpc.gateway.client import build_gateway_grpc_client
 from contracts.services.gateway.operations.operations_gateway_service_pb2_grpc import OperationsGatewayServiceStub
-from contracts.services.gateway.operations.rpc_get_operation_pb2 import (GetOperationRequest, GetOperationResponse)
-from contracts.services.gateway.operations.rpc_get_operation_receipt_pb2 import (GetOperationReceiptRequest, GetOperationReceiptResponse)
-from contracts.services.gateway.operations.rpc_get_operations_pb2 import (GetOperationsRequest, GetOperationsResponse)
-from contracts.services.gateway.operations.rpc_get_operations_summary_pb2 import (GetOperationsSummaryRequest, GetOperationsSummaryResponse)
-from contracts.services.gateway.operations.rpc_make_fee_operation_pb2 import (MakeFeeOperationRequest, MakeFeeOperationResponse)
-from contracts.services.gateway.operations.rpc_make_top_up_operation_pb2 import (MakeTopUpOperationRequest, MakeTopUpOperationResponse)
-from contracts.services.gateway.operations.rpc_make_cashback_operation_pb2 import (MakeCashbackOperationRequest, MakeCashbackOperationResponse)
-from contracts.services.gateway.operations.rpc_make_transfer_operation_pb2 import (MakeTransferOperationRequest, MakeTransferOperationResponse)
-from contracts.services.gateway.operations.rpc_make_purchase_operation_pb2 import (MakePurchaseOperationRequest, MakePurchaseOperationResponse)
-from contracts.services.gateway.operations.rpc_make_bill_payment_operation_pb2 import (MakeBillPaymentOperationRequest, MakeBillPaymentOperationResponse)
-from contracts.services.gateway.operations.rpc_make_cash_withdrawal_operation_pb2 import (MakeCashWithdrawalOperationRequest, MakeCashWithdrawalOperationResponse)
+from contracts.services.gateway.operations.rpc_get_operation_pb2 import GetOperationRequest, GetOperationResponse
+from contracts.services.gateway.operations.rpc_get_operation_receipt_pb2 import (
+    GetOperationReceiptRequest,
+    GetOperationReceiptResponse
+)
+from contracts.services.gateway.operations.rpc_get_operations_pb2 import GetOperationsRequest, GetOperationsResponse
+from contracts.services.gateway.operations.rpc_get_operations_summary_pb2 import (
+    GetOperationsSummaryRequest,
+    GetOperationsSummaryResponse
+)
+from contracts.services.gateway.operations.rpc_make_bill_payment_operation_pb2 import (
+    MakeBillPaymentOperationRequest,
+    MakeBillPaymentOperationResponse
+)
+from contracts.services.gateway.operations.rpc_make_cash_withdrawal_operation_pb2 import (
+    MakeCashWithdrawalOperationRequest,
+    MakeCashWithdrawalOperationResponse
+)
+from contracts.services.gateway.operations.rpc_make_cashback_operation_pb2 import (
+    MakeCashbackOperationRequest,
+    MakeCashbackOperationResponse
+)
+from contracts.services.gateway.operations.rpc_make_fee_operation_pb2 import (
+    MakeFeeOperationRequest,
+    MakeFeeOperationResponse
+)
+from contracts.services.gateway.operations.rpc_make_purchase_operation_pb2 import (
+    MakePurchaseOperationRequest,
+    MakePurchaseOperationResponse
+)
+from contracts.services.gateway.operations.rpc_make_top_up_operation_pb2 import (
+    MakeTopUpOperationRequest,
+    MakeTopUpOperationResponse
+)
+from contracts.services.gateway.operations.rpc_make_transfer_operation_pb2 import (
+    MakeTransferOperationRequest,
+    MakeTransferOperationResponse
+)
 from contracts.services.operations.operation_pb2 import OperationStatus
-
 from tools.fakers import fake
 
 
 class OperationsGatewayGRPCClient(GRPCClient):
     """
     gRPC-клиент для взаимодействия с OperationsGatewayService.
-    Предоставляет высокоуровневые методы для работы с операциями.
+    Предоставляет высокоуровневые методы для работы с картами.
     """
 
     def __init__(self, channel: Channel):
@@ -40,7 +66,7 @@ class OperationsGatewayGRPCClient(GRPCClient):
         Низкоуровневый вызов метода GetOperation через gRPC.
 
         :param request: gRPC-запрос с ID операции.
-        :return: Ответ от сервиса с данными по операции.
+        :return: Ответ от сервиса с данными операции.
         """
         return self.stub.GetOperation(request)
 
@@ -49,17 +75,17 @@ class OperationsGatewayGRPCClient(GRPCClient):
         Низкоуровневый вызов метода GetOperationReceipt через gRPC.
 
         :param request: gRPC-запрос с ID операции.
-        :return: Ответ от сервиса с данными чека операции.
+        :return: Ответ от сервиса с данными чека по операции.
         """
         return self.stub.GetOperationReceipt(request)
 
     def get_operations_api(self, request: GetOperationsRequest) -> GetOperationsResponse:
         """
-         Низкоуровневый вызов метода GetOperations через gRPC.
+        Низкоуровневый вызов метода GetOperations через gRPC.
 
-         :param request: gRPC-запрос с ID счета.
-         :return: Ответ от сервиса с данными списка операций для определенного счета..
-         """
+        :param request: gRPC-запрос с ID счета.
+        :return: Ответ от сервиса со списком операций.
+        """
         return self.stub.GetOperations(request)
 
     def get_operations_summary_api(self, request: GetOperationsSummaryRequest) -> GetOperationsSummaryResponse:
@@ -67,7 +93,7 @@ class OperationsGatewayGRPCClient(GRPCClient):
         Низкоуровневый вызов метода GetOperationsSummary через gRPC.
 
         :param request: gRPC-запрос с ID счета.
-        :return: Ответ от сервиса с данными статистики по операциям для определенного счета.
+        :return: Ответ от сервиса со статистикой по операциям.
         """
         return self.stub.GetOperationsSummary(request)
 
@@ -76,7 +102,7 @@ class OperationsGatewayGRPCClient(GRPCClient):
         Низкоуровневый вызов метода MakeFeeOperation через gRPC.
 
         :param request: gRPC-запрос с данными для создания операции комиссии.
-        :return: Ответ от сервиса с данными о создании операции комиссии.
+        :return: Ответ от сервиса с данными созданной операции комиссии.
         """
         return self.stub.MakeFeeOperation(request)
 
@@ -85,7 +111,7 @@ class OperationsGatewayGRPCClient(GRPCClient):
         Низкоуровневый вызов метода MakeTopUpOperation через gRPC.
 
         :param request: gRPC-запрос с данными для создания операции пополнения.
-        :return: Ответ от сервиса с данными о создании операции пополнения.
+        :return: Ответ от сервиса с данными созданной операции пополнения.
         """
         return self.stub.MakeTopUpOperation(request)
 
@@ -93,8 +119,8 @@ class OperationsGatewayGRPCClient(GRPCClient):
         """
         Низкоуровневый вызов метода MakeCashbackOperation через gRPC.
 
-        :param request: gRPC-запрос с данными для создания операции возврата.
-        :return: Ответ от сервиса с данными о создании операции возврата.
+        :param request: gRPC-запрос с данными для создания операции кэшбэка.
+        :return: Ответ от сервиса с данными созданной операции кэшбэка.
         """
         return self.stub.MakeCashbackOperation(request)
 
@@ -103,7 +129,7 @@ class OperationsGatewayGRPCClient(GRPCClient):
         Низкоуровневый вызов метода MakeTransferOperation через gRPC.
 
         :param request: gRPC-запрос с данными для создания операции перевода.
-        :return: Ответ от сервиса с данными о создании операции перевода.
+        :return: Ответ от сервиса с данными созданной операции перевода.
         """
         return self.stub.MakeTransferOperation(request)
 
@@ -112,25 +138,31 @@ class OperationsGatewayGRPCClient(GRPCClient):
         Низкоуровневый вызов метода MakePurchaseOperation через gRPC.
 
         :param request: gRPC-запрос с данными для создания операции покупки.
-        :return: Ответ от сервиса с данными о создании операции покупки.
+        :return: Ответ от сервиса с данными созданной операции покупки.
         """
         return self.stub.MakePurchaseOperation(request)
 
-    def make_bill_payment_operation_api(self, request: MakeBillPaymentOperationRequest) -> MakeBillPaymentOperationResponse:
+    def make_bill_payment_operation_api(
+            self,
+            request: MakeBillPaymentOperationRequest
+    ) -> MakeBillPaymentOperationResponse:
         """
         Низкоуровневый вызов метода MakeBillPaymentOperation через gRPC.
 
-        :param request: gRPC-запрос с данными для создания операции оплаты счета.
-        :return: Ответ от сервиса с данными о создании операции оплаты счета.
+        :param request: gRPC-запрос с данными для создания операции платежа по счету.
+        :return: Ответ от сервиса с данными созданной операции платежа по счету.
         """
         return self.stub.MakeBillPaymentOperation(request)
 
-    def make_cash_withdrawal_operation_api(self, request: MakeCashWithdrawalOperationRequest) -> MakeCashWithdrawalOperationResponse:
+    def make_cash_withdrawal_operation_api(
+            self,
+            request: MakeCashWithdrawalOperationRequest
+    ) -> MakeCashWithdrawalOperationResponse:
         """
         Низкоуровневый вызов метода MakeCashWithdrawalOperation через gRPC.
 
         :param request: gRPC-запрос с данными для создания операции снятия наличных.
-        :return: Ответ от сервиса с данными о создании операции снятия наличных.
+        :return: Ответ от сервиса с данными созданной операции снятия наличных.
         """
         return self.stub.MakeCashWithdrawalOperation(request)
 
@@ -150,61 +182,68 @@ class OperationsGatewayGRPCClient(GRPCClient):
         request = GetOperationsSummaryRequest(account_id=account_id)
         return self.get_operations_summary_api(request)
 
-    def make_fee_operation(self, account_id: str, card_id: str) -> MakeFeeOperationResponse:
-        request = MakeFeeOperationRequest(account_id=account_id,
-                                          card_id=card_id,
-                                          status=fake.proto_enum(OperationStatus),
-                                          amount=fake.amount()
-                                          )
+    def make_fee_operation(self, card_id: str, account_id: str) -> MakeFeeOperationResponse:
+        request = MakeFeeOperationRequest(
+            status=fake.proto_enum(OperationStatus),
+            amount=fake.amount(),
+            card_id=card_id,
+            account_id=account_id
+        )
         return self.make_fee_operation_api(request)
 
-    def make_top_up_operation(self, account_id: str, card_id: str) -> MakeTopUpOperationResponse:
-        request = MakeTopUpOperationRequest(account_id=account_id,
-                                            card_id=card_id,
-                                            status=fake.proto_enum(OperationStatus),
-                                            amount=fake.amount()
-                                            )
+    def make_top_up_operation(self, card_id: str, account_id: str) -> MakeTopUpOperationResponse:
+        request = MakeTopUpOperationRequest(
+            status=fake.proto_enum(OperationStatus),
+            amount=fake.amount(),
+            card_id=card_id,
+            account_id=account_id
+        )
         return self.make_top_up_operation_api(request)
 
-    def make_cashback_operation(self, account_id: str, card_id: str) -> MakeCashbackOperationResponse:
-        request = MakeCashbackOperationRequest(account_id=account_id,
-                                               card_id=card_id,
-                                               status=fake.proto_enum(OperationStatus),
-                                               amount=fake.amount()
-                                               )
+    def make_cashback_operation(self, card_id: str, account_id: str) -> MakeCashbackOperationResponse:
+        request = MakeCashbackOperationRequest(
+            status=fake.proto_enum(OperationStatus),
+            amount=fake.amount(),
+            card_id=card_id,
+            account_id=account_id
+        )
         return self.make_cashback_operation_api(request)
 
-    def make_transfer_operation(self, account_id: str, card_id: str) -> MakeTransferOperationResponse:
-        request = MakeTransferOperationRequest(account_id=account_id,
-                                               card_id=card_id,
-                                               status=fake.proto_enum(OperationStatus),
-                                               amount=fake.amount()
-                                               )
+    def make_transfer_operation(self, card_id: str, account_id: str) -> MakeTransferOperationResponse:
+        request = MakeTransferOperationRequest(
+            status=fake.proto_enum(OperationStatus),
+            amount=fake.amount(),
+            card_id=card_id,
+            account_id=account_id
+        )
         return self.make_transfer_operation_api(request)
 
-    def make_purchase_operation(self, account_id: str, card_id: str) -> MakePurchaseOperationResponse:
-        request = MakePurchaseOperationRequest(account_id=account_id,
-                                               card_id=card_id,
-                                               status=fake.proto_enum(OperationStatus),
-                                               amount=fake.amount(),
-                                               category=fake.category()
-                                               )
+    def make_purchase_operation(self, card_id: str, account_id: str) -> MakePurchaseOperationResponse:
+        request = MakePurchaseOperationRequest(
+            status=fake.proto_enum(OperationStatus),
+            amount=fake.amount(),
+            card_id=card_id,
+            category=fake.category(),
+            account_id=account_id
+        )
         return self.make_purchase_operation_api(request)
 
-    def make_bill_payment_operation(self, account_id: str, card_id: str) -> MakeBillPaymentOperationResponse:
-        request = MakeBillPaymentOperationRequest(account_id=account_id,
-                                                  card_id=card_id,
-                                                  status=fake.proto_enum(OperationStatus),
-                                                  amount=fake.amount()
-                                                  )
+    def make_bill_payment_operation(self, card_id: str, account_id: str) -> MakeBillPaymentOperationResponse:
+        request = MakeBillPaymentOperationRequest(
+            status=fake.proto_enum(OperationStatus),
+            amount=fake.amount(),
+            card_id=card_id,
+            account_id=account_id
+        )
         return self.make_bill_payment_operation_api(request)
 
-    def make_cash_withdrawal_operation(self, account_id: str, card_id: str) -> MakeCashWithdrawalOperationResponse:
-        request = MakeCashWithdrawalOperationRequest(account_id=account_id,
-                                                     card_id=card_id,
-                                                     status=fake.proto_enum(OperationStatus),
-                                                     amount=fake.amount()
-                                                     )
+    def make_cash_withdrawal_operation(self, card_id: str, account_id: str) -> MakeCashWithdrawalOperationResponse:
+        request = MakeCashWithdrawalOperationRequest(
+            status=fake.proto_enum(OperationStatus),
+            amount=fake.amount(),
+            card_id=card_id,
+            account_id=account_id
+        )
         return self.make_cash_withdrawal_operation_api(request)
 
 
