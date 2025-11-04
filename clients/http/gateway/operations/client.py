@@ -1,7 +1,11 @@
 from httpx import Response, QueryParams
+from locust.env import Environment  # Импорт окружения Locust
 
-from clients.http.client import HTTPClient
-from clients.http.gateway.client import build_gateway_http_client
+from clients.http.client import HTTPClient, HTTPClientExtensions  # Импортируем тип extensions
+from clients.http.gateway.client import (
+    build_gateway_http_client,
+    build_gateway_locust_http_client  # Импорт билдера для нагрузочного тестирования
+)
 from clients.http.gateway.operations.schema import (
     GetOperationResponseSchema,
     GetOperationReceiptResponseSchema,
@@ -38,7 +42,11 @@ class OperationsGatewayHTTPClient(HTTPClient):
         :param operation_id: Уникальный идентификатор операции.
         :return: Объект httpx.Response с данными об операции.
         """
-        return self.get(f"/api/v1/operations/{operation_id}")
+        return self.get(
+            f"/api/v1/operations/{operation_id}",
+            # Явно передаём логическое имя маршрута
+            extensions=HTTPClientExtensions(route="/api/v1/operations/{operation_id}")
+        )
 
     def get_operation_receipt_api(self, operation_id: str) -> Response:
         """
@@ -47,31 +55,41 @@ class OperationsGatewayHTTPClient(HTTPClient):
         :param operation_id: Уникальный идентификатор операции.
         :return: Объект httpx.Response с чеком по операции.
         """
-        return self.get(f"/api/v1/operations/operation-receipt/{operation_id}")
+        return self.get(
+            f"/api/v1/operations/operation-receipt/{operation_id}",
+            # Явно передаём логическое имя маршрута
+            extensions=HTTPClientExtensions(route="/api/v1/operations/operation-receipt/{operation_id}")
+        )
 
     def get_operations_api(self, query: GetOperationsQuerySchema) -> Response:
         """
         Получает список операций по счёту.
 
-        :param query: Модель с параметром accountId.
+        :param query: Словарь с параметром accountId.
         :return: Объект httpx.Response с операциями по счёту.
         """
         return self.get(
             "/api/v1/operations",
-            params=QueryParams(**query.model_dump(by_alias=True))
+            params=QueryParams(**query.model_dump(by_alias=True)),
+            # Явно передаём логическое имя маршрута
+            extensions=HTTPClientExtensions(route="/api/v1/operations")
         )
 
     def get_operations_summary_api(self, query: GetOperationsSummaryQuerySchema) -> Response:
         """
         Получает сводную статистику операций по счёту.
 
-        :param query: Модель с параметром accountId.
+        :param query: Словарь с параметром accountId.
         :return: Объект httpx.Response с агрегированной информацией.
         """
         return self.get(
             "/api/v1/operations/operations-summary",
-            params=QueryParams(**query.model_dump(by_alias=True))
+            params=QueryParams(**query.model_dump(by_alias=True)),
+            # Явно передаём логическое имя маршрута
+            extensions=HTTPClientExtensions(route="/api/v1/operations/operations-summary")
         )
+
+# Остальной код без изменений
 
     def make_fee_operation_api(self, request: MakeFeeOperationRequestSchema) -> Response:
         """
@@ -243,3 +261,17 @@ def build_operations_gateway_http_client() -> OperationsGatewayHTTPClient:
     :return: Готовый к использованию OperationsGatewayHTTPClient.
     """
     return OperationsGatewayHTTPClient(client=build_gateway_http_client())
+
+def build_operations_gateway_locust_http_client(environment: Environment) -> OperationsGatewayHTTPClient:
+    """
+    Функция создаёт экземпляр OperationsGatewayHTTPClient адаптированного под Locust.
+
+    Клиент автоматически собирает метрики и передаёт их в Locust через хуки.
+    Используется исключительно в нагрузочных тестах.
+
+    :param environment: объект окружения Locust.
+    :return: экземпляр OperationsGatewayHTTPClient с хуками сбора метрик.
+    """
+    return OperationsGatewayHTTPClient(client=build_gateway_locust_http_client(environment))
+
+
