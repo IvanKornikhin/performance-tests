@@ -1,11 +1,11 @@
 from locust import User, between, task
 
-from clients.grpc.gateway.locust import GatewayGRPCTaskSet
-from contracts.services.gateway.users.rpc_create_user_pb2 import CreateUserResponse
+from clients.http.gateway.locust import GatewayHTTPTaskSet
+from clients.http.gateway.users.schema import CreateUserResponseSchema
 
 
-class GetAccountsTaskSet(GatewayGRPCTaskSet):
-    create_user_response: CreateUserResponse | None = None
+class GetAccountsTaskSet(GatewayHTTPTaskSet):
+    create_user_response: CreateUserResponseSchema | None = None
 
     @task(2)
     def create_user(self):
