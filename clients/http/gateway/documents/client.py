@@ -10,11 +10,11 @@ from clients.http.gateway.documents.schema import (
     GetTariffDocumentResponseSchema,
     GetContractDocumentResponseSchema
 )
-
+from tools.routes import APIRoutes  # Импортируем enum APIRoutes
 
 class DocumentsGatewayHTTPClient(HTTPClient):
     """
-    Клиент для взаимодействия с /api/v1/documents сервиса http-gateway.
+    Клиент для взаимодействия с {APIRoutes.DOCUMENTS} сервиса http-gateway.
     """
 
     def get_tariff_document_api(self, account_id: str) -> Response:
@@ -25,9 +25,9 @@ class DocumentsGatewayHTTPClient(HTTPClient):
         :return: Ответ от сервера (объект httpx.Response).
         """
         return self.get(
-            f"/api/v1/documents/tariff-document/{account_id}",
+            f"{APIRoutes.DOCUMENTS}/tariff-document/{account_id}",
             # Явно передаём логическое имя маршрута
-            extensions=HTTPClientExtensions(route="/api/v1/documents/tariff-document/{account_id}")
+            extensions=HTTPClientExtensions(route="{APIRoutes.DOCUMENTS}/tariff-document/{account_id}")
         )
 
     def get_contract_document_api(self, account_id: str) -> Response:
@@ -38,9 +38,9 @@ class DocumentsGatewayHTTPClient(HTTPClient):
         :return: Ответ от сервера (объект httpx.Response).
         """
         return self.get(
-            f"/api/v1/documents/contract-document/{account_id}",
+            f"{APIRoutes.DOCUMENTS}/contract-document/{account_id}",
             # Явно передаём логическое имя маршрута
-            extensions=HTTPClientExtensions(route="/api/v1/documents/contract-document/{account_id}")
+            extensions=HTTPClientExtensions(route="{APIRoutes.DOCUMENTS}/contract-document/{account_id}")
         )
 
 # Остальной код без изменений

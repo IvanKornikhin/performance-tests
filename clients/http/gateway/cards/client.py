@@ -1,5 +1,5 @@
 from httpx import Response
-from locust.env import Environment  # Импорт окружения Locust
+from locust.env import Environment
 
 from clients.http.client import HTTPClient
 from clients.http.gateway.cards.schema import (
@@ -10,8 +10,9 @@ from clients.http.gateway.cards.schema import (
 )
 from clients.http.gateway.client import (
     build_gateway_http_client,
-    build_gateway_locust_http_client  # Импорт билдера для нагрузочного тестирования
+    build_gateway_locust_http_client
 )
+from tools.routes import APIRoutes  # Импортируем enum APIRoutes
 
 
 class CardsGatewayHTTPClient(HTTPClient):
@@ -26,8 +27,9 @@ class CardsGatewayHTTPClient(HTTPClient):
         :param request: Pydantic-модель с данными для выпуска виртуальной карты.
         :return: Ответ от сервера (объект httpx.Response).
         """
+        # Вместо /api/v1/cards используем APIRoutes.CARDS
         return self.post(
-            "/api/v1/cards/issue-virtual-card",
+            f"{APIRoutes.CARDS}/issue-virtual-card",
             json=request.model_dump(by_alias=True)
         )
 
@@ -38,8 +40,9 @@ class CardsGatewayHTTPClient(HTTPClient):
         :param request: Pydantic-модель с данными для выпуска физической карты.
         :return: Ответ от сервера (объект httpx.Response).
         """
+        # Вместо /api/v1/cards используем APIRoutes.CARDS
         return self.post(
-            "/api/v1/cards/issue-physical-card",
+            f"{APIRoutes.CARDS}/issue-physical-card",
             json=request.model_dump(by_alias=True)
         )
 
