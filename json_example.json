@@ -1,6 +1,0 @@
-{
-  "name": "Иван",
-  "age": 10,
-  "is_student": false,
-  "courses": ["Python", "QA Automation", "Testing"]
-}
