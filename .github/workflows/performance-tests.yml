@@ -98,7 +98,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: test-report
-          path: ./reports/  # Загружаем в ту же структуру папок
+          path: ./reports/${{ github.run_id }}/ # Загружаем в ту же структуру папок
 
       # 9. Деплой HTML-отчёта в GitHub Pages, чтобы можно было посмотреть результаты в браузере
       - name: Deploy HTML report to GitHub Pages
