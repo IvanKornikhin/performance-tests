@@ -72,6 +72,34 @@ jobs:
       - name: Run load tests and generate HTML report
         run: locust --config=${{ github.event.inputs.SCENARIO }} --html=./reports/${{ github.run_id }}/index.html
 
+      # 9. Сохраняем папку reports как артефакт
+      - name: Upload test report artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-report
+          path: ./reports/${{ github.run_id }}/
+          retention-days: 10  # Храним артефакт 10 дней
+
+      # 10. Корректно останавливаем docker-контейнеры и удаляем volume-ы (например, temp-файлы)
+      - name: Stop test services
+        if: always()
+        run: docker compose -f docker-compose.ci.yaml down -v
+        working-directory: performance-qa-engineer-course
+
+  publish-report:
+    runs-on: ubuntu-latest  # Используется стандартный GitHub Actions runner
+    needs: run-tests
+    if: always()
+    timeout-minutes: 30  # Ограничение по времени выполнения — 30 минут
+
+    steps:
+      # 1. Загружаем артефакт с отчетом из предыдущей джобы
+      - name: Download test report artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: test-report
+          path: ./reports/  # Загружаем в ту же структуру папок
+
       # 9. Деплой HTML-отчёта в GitHub Pages, чтобы можно было посмотреть результаты в браузере
       - name: Deploy HTML report to GitHub Pages
         if: always()
@@ -81,9 +109,3 @@ jobs:
           keep_files: true  # Сохраняем предыдущие отчёты
           publish_dir: reports  # Публикуем директорию reports
           publish_branch: gh-pages  # На ветке gh-pages
-
-      # 10. Корректно останавливаем docker-контейнеры и удаляем volume-ы (например, temp-файлы)
-      - name: Stop test services
-        if: always()
-        run: docker compose -f docker-compose.ci.yaml down -v
-        working-directory: performance-qa-engineer-course
